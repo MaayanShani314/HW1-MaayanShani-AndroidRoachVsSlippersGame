@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="heart_size">40dp</dimen>
+    <dimen name="hearts_layout_width">140dp</dimen>
+    <dimen name="heart_margin">10dp</dimen>
+    <dimen name="cockroach_width">90dp</dimen>
+    <dimen name="cockroach_height">90dp</dimen>
+    <dimen name="cockroach_margin">80dp</dimen>
+    <dimen name="button_width">60dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="margin_cockroach">80dp</dimen>
+    <dimen name="rowMatHeight">80dp</dimen>
+    <dimen name="flipFlopHeight">60dp</dimen>
+    <dimen name="text_size_GameOver">60sp</dimen>
+</resources>
