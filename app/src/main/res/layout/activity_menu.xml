@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuActivity"
+    android:background="@drawable/menu">
+
+
+<LinearLayout
+    android:id="@+id/menu_LAY_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_alignParentBottom="true"
+    android:layout_marginStart="@dimen/default_margin_buttons_menu"
+    android:layout_marginEnd="@dimen/default_margin_buttons_menu"
+    android:layout_marginBottom="@dimen/default_margin_menu">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menu_BTN_buttonMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_button_mode"
+        android:textSize="@dimen/size_buttons_text"
+        android:backgroundTint="@color/LightBlue_800"
+        android:layout_margin="@dimen/default_margin_buttons_menu" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menu_BTN_sensorMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_sensor_mode"
+        android:textSize="@dimen/size_buttons_text"
+        android:layout_margin="@dimen/default_margin_buttons_menu"
+        android:backgroundTint="@color/LightBlue_800"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menu_BTN_topTen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/top_ten"
+        android:textSize="@dimen/size_buttons_text"
+        android:layout_margin="@dimen/default_margin_buttons_menu"
+        android:backgroundTint="@color/LightBlue_800"
+        />
+</LinearLayout>
+
+</RelativeLayout>

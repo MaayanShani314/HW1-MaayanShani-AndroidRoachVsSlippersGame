@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/topTen_card_margin_h"
+    android:layout_marginVertical="@dimen/topTen_card_margin_v"
+    app:cardCornerRadius="@dimen/topTen_card_radius"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layoutDirection="ltr"
+        android:padding="@dimen/topTen_item_padding"
+        android:background="@drawable/bg_topten_item_neon">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_LBL_score"
+            android:layout_width="@dimen/topTen_score_width"
+            android:layout_height="@dimen/topTen_score_height"
+            android:background="@drawable/bg_score_capsule"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/topTen_score_text_size"
+            tools:text="@string/score"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_LBL_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/topTen_score_name_spacing"
+            android:textColor="@color/colorTextPlayer"
+            android:textSize="@dimen/topTen_name_text_size"
+            android:textStyle="bold"
+            tools:text="@string/player_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_LBL_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_text_rank"
+            android:textSize="@dimen/topTen_rank_text_size"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_rank"
+            tools:text="@string/rank_text" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

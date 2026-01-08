@@ -11,16 +11,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.progect1_game.interfaces.TiltCallback
+import com.example.progect1_game.logic.GameManager
 import com.example.progect1_game.utilities.Constants
+import com.example.progect1_game.utilities.GameObject
 import com.example.progect1_game.utilities.SignalManager
+import com.example.progect1_game.utilities.SingleSoundPlayer
+import com.example.progect1_game.utilities.TiltDetector
+import com.google.android.material.textview.MaterialTextView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var main_IMG_cockroachLeft: AppCompatImageView
-
-    private lateinit var main_IMG_cockroachCenter: AppCompatImageView
-
-    private lateinit var main_IMG_cockroachRight: AppCompatImageView
+    private lateinit var cockroachViews: Array<AppCompatImageView>
 
     private lateinit var main_IB_left: ImageButton
 
@@ -28,70 +30,41 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var main_IMG_hearts: Array<AppCompatImageView>
 
+    private lateinit var main_LBL_coins: MaterialTextView
+
+
     private lateinit var matrix: Array<Array<AppCompatImageView>>
+
+    private lateinit var objectMatrix: Array<Array<Int>>
+
+    private lateinit var soundPlayer: SingleSoundPlayer
+
 
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     private var gameRunning = false
 
-    private val NUM_LANES = 3
-    private var currentLane = 1
+    private val NUM_LANES = 5
+    private val MAX_LIVES = 3
 
-    private var lives = 3
+    private lateinit var gameManager: GameManager
+
+    private var tiltDetector: TiltDetector? = null
+    private var isSensorMode = false
+
+    private var currentDelay = Constants.Timer.NORMAL_DELAY
+
+
 
 
     private val gameRunnable: Runnable = object : Runnable {
         override fun run() {
-            handler.postDelayed(this, Constants.Timer.DELAY)
-
+            handler.postDelayed(this, currentDelay)
+            gameManager.increaseOdometer()
             moveFlipflopsDown()
             checkCrash()
         }
     }
-    private fun checkCrash() {
-        val crashRow = 7
-
-        if (matrix[crashRow][currentLane].visibility == View.VISIBLE &&
-            isCockroachInLane(currentLane)) {
-
-            removeHeart()
-
-        }
-    }
-
-    private fun isCockroachInLane(lane: Int): Boolean {
-        return when (lane) {
-            0 -> main_IMG_cockroachLeft.visibility == View.VISIBLE
-            1 -> main_IMG_cockroachCenter.visibility == View.VISIBLE
-            2 -> main_IMG_cockroachRight.visibility == View.VISIBLE
-            else -> false
-        }
-    }
-    private fun moveFlipflopsDown() {
-
-        for (row in 7 downTo 1) {
-            for (col in 0..2) {
-
-                if (matrix[row - 1][col].visibility == View.VISIBLE) {
-                    matrix[row][col].visibility = View.VISIBLE
-                } else {
-                    matrix[row][col].visibility = View.INVISIBLE
-                }
-            }
-        }
-
-        for (col in 0..2) {
-            matrix[0][col].visibility = View.INVISIBLE
-        }
-
-
-        if ((0..100).random() < 35) {
-            val randomLane = (0..2).random()
-            matrix[0][randomLane].visibility = View.VISIBLE
-        }
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -103,31 +76,134 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        gameManager = GameManager(NUM_LANES, MAX_LIVES)
+        objectMatrix = Array(8) { Array(NUM_LANES) { GameObject.EMPTY } }
+        soundPlayer = SingleSoundPlayer(this)
+
+
         findViews()
-        initLanes()
+        applyControlMode()
         initButtons()
         startGame()
     }
 
+    private fun checkCrash() {
+        val crashRow = 7
+        val lane = gameManager.getCurrentLane()
+        val obj = objectMatrix[crashRow][lane]
+
+        when (obj) {
+
+            GameObject.FLIPFLOP -> {
+                if (gameManager.hit()) {
+                    updateHearts()
+                    soundPlayer.playSound(R.raw.smash)
+                    SignalManager.getInstance().vibrate()
+                    SignalManager.getInstance()
+                        .toast("Oops! 😧", SignalManager.ToastLength.SHORT)
+                }
+            }
+
+            GameObject.COIN -> {
+                gameManager.collectCoin()
+                updateCoins()
+                soundPlayer.playSound(R.raw.collectcoins)
+                SignalManager.getInstance().toast("🪙 +10", SignalManager.ToastLength.SHORT)
+            }
+
+            GameObject.HEART -> {
+                if (gameManager.collectHeart()) {
+                    updateHearts()
+                    soundPlayer.playSound(R.raw.yay)
+                    SignalManager.getInstance().toast("❤️ +1", SignalManager.ToastLength.SHORT)
+                }
+            }
+        }
+
+        objectMatrix[crashRow][lane] = GameObject.EMPTY
+        matrix[crashRow][lane].visibility = View.INVISIBLE
+
+        if (gameManager.isGameOver()) {
+            stopGame()
+            changeActivity()
+        }
+    }
+
+    private fun updateHearts() {
+        val lives = gameManager.getLives()
+        main_IMG_hearts.forEachIndexed { index, imageView ->
+            imageView.visibility = if (index < lives) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    private fun moveFlipflopsDown() {
+
+        for (row in 7 downTo 1) {
+            for (col in 0 until NUM_LANES) {
+                objectMatrix[row][col] = objectMatrix[row - 1][col]
+                matrix[row][col].visibility = matrix[row - 1][col].visibility
+                matrix[row][col].setImageDrawable(matrix[row - 1][col].drawable)
+            }
+        }
+
+        for (col in 0 until NUM_LANES) {
+            objectMatrix[0][col] = GameObject.EMPTY
+            matrix[0][col].visibility = View.INVISIBLE
+        }
+
+        if ((0..100).random() < 35) {
+            val lane = (0 until NUM_LANES).random()
+            val roll = (0..100).random()
+
+            val type = when {
+                roll < 50 -> GameObject.FLIPFLOP
+                roll < 80 -> GameObject.COIN
+                else -> {
+                    if (gameManager.getLives() < MAX_LIVES)
+                        GameObject.HEART
+                    else
+                        GameObject.COIN
+                }
+            }
+
+            objectMatrix[0][lane] = type
+            matrix[0][lane].visibility = View.VISIBLE
+
+            matrix[0][lane].setImageResource(
+                when (type) {
+                    GameObject.FLIPFLOP -> R.drawable.flipflop
+                    GameObject.COIN -> R.drawable.coin
+                    GameObject.HEART -> R.drawable.heart2
+                    else -> 0
+                }
+            )
+        }
+    }
 
 
     private fun startGame() {
         if (!gameRunning) {
             gameRunning = true
-            handler.postDelayed(gameRunnable, Constants.Timer.DELAY)
+            handler.postDelayed(gameRunnable, currentDelay)
         }
     }
 
 
     private fun findViews() {
-        main_IMG_cockroachLeft = findViewById(R.id.main_IMG_cockroachLeft)
-        main_IMG_cockroachCenter = findViewById(R.id.main_IMG_cockroachCenter)
-        main_IMG_cockroachRight = findViewById(R.id.main_IMG_cockroachRight)
+
+        cockroachViews = arrayOf(
+            findViewById(R.id.main_IMG_cockroach0),
+            findViewById(R.id.main_IMG_cockroach1),
+            findViewById(R.id.main_IMG_cockroach2),
+            findViewById(R.id.main_IMG_cockroach3),
+            findViewById(R.id.main_IMG_cockroach4)
+        )
+
         main_IB_left = findViewById(R.id.main_IB_left)
         main_IB_right = findViewById(R.id.main_IB_right)
 
         matrix = Array(8) { row ->
-            Array(3) { col ->
+            Array(NUM_LANES) { col ->
                 val id = resources.getIdentifier("flipflop_${row}_${col}", "id", packageName)
                 findViewById(id)
             }
@@ -138,82 +214,99 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.main_IMG_heart1),
             findViewById(R.id.main_IMG_heart2)
         )
-    }
 
+        main_LBL_coins = findViewById(R.id.main_LBL_coins)
 
-    private fun initLanes() {
-        currentLane = 1
-        moveToCurrentLane()
     }
 
     private fun initButtons() {
         main_IB_left.setOnClickListener {
-            if (currentLane > 0) {
-                currentLane--
-                moveToCurrentLane()
+            if (gameManager.moveLeft()) {
+                updateCockroachPosition()
             }
         }
 
         main_IB_right.setOnClickListener {
-            if (currentLane < NUM_LANES - 1) {
-                currentLane++
-                moveToCurrentLane()
+            if (gameManager.moveRight()) {
+                updateCockroachPosition()
             }
         }
     }
 
-    private fun moveToCurrentLane() {
-        main_IMG_cockroachLeft.visibility = View.INVISIBLE
-        main_IMG_cockroachCenter.visibility = View.INVISIBLE
-        main_IMG_cockroachRight.visibility = View.INVISIBLE
-
-        when (currentLane) {
-            0 -> main_IMG_cockroachLeft.visibility = View.VISIBLE
-            1 -> main_IMG_cockroachCenter.visibility = View.VISIBLE
-            2 -> main_IMG_cockroachRight.visibility = View.VISIBLE
-        }
+    private fun updateCockroachPosition() {
+        cockroachViews.forEach { it.visibility = View.INVISIBLE }
+        cockroachViews[gameManager.getCurrentLane()].visibility = View.VISIBLE
     }
-
-
-
-    private fun removeHeart() {
-        if (lives > 0) {
-            lives--
-            main_IMG_hearts[lives].visibility = View.INVISIBLE
-
-            SignalManager.getInstance().toast("Oops!😧", SignalManager.ToastLength.SHORT)
-            SignalManager.getInstance().vibrate()
-        }
-
-         if (lives == 0) {
-            stopGame()
-             changeActivity()
-        }
-    }
-
 
     private fun changeActivity() {
         val intent = Intent(this, GameOverActivity::class.java)
+        intent.putExtra("EXTRA_ODOMETER", gameManager.getOdometer())
         startActivity(intent)
         finish()
     }
 
-   private fun stopGame() {
+    private fun applyControlMode() {
+        val mode = intent.getStringExtra(MenuActivity.EXTRA_CONTROL_MODE)
+            ?: MenuActivity.CONTROL_BUTTONS
+
+        isSensorMode = mode == MenuActivity.CONTROL_SENSORS
+
+        if (isSensorMode) {
+            main_IB_left.visibility = View.INVISIBLE
+            main_IB_right.visibility = View.INVISIBLE
+            initTiltDetector()
+        } else {
+            main_IB_left.visibility = View.VISIBLE
+            main_IB_right.visibility = View.VISIBLE
+        }
+    }
+
+    private fun initTiltDetector() {
+        tiltDetector = TiltDetector(this, object : TiltCallback {
+
+            override fun tiltLeft() {
+                if (gameManager.moveLeft()) updateCockroachPosition()
+            }
+
+            override fun tiltRight() {
+                if (gameManager.moveRight()) updateCockroachPosition()
+            }
+
+            override fun tiltForward() {
+                currentDelay = Constants.Timer.FAST_DELAY
+            }
+
+            override fun tiltBackward() {
+                currentDelay = Constants.Timer.SLOW_DELAY
+            }
+
+            override fun tiltNeutral() {
+                currentDelay = Constants.Timer.NORMAL_DELAY
+            }
+        })
+    }
+
+    private fun updateCoins() {
+        main_LBL_coins.text = "Coins: ${gameManager.getCoins()}"
+    }
+
+    private fun stopGame() {
         gameRunning = false
         handler.removeCallbacks(gameRunnable)
 
    }
 
+    override fun onResume() {
+        super.onResume()
+        if (isSensorMode)
+            tiltDetector?.start()
+        if (!gameRunning && !gameManager.isGameOver())
+            startGame()
+    }
 
     override fun onPause() {
         super.onPause()
+        tiltDetector?.stop()
         stopGame()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!gameRunning && lives > 0) {
-            startGame()
-        }
     }
 }

@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/heart_size"
-            app:srcCompat="@drawable/heart0"
+            app:srcCompat="@drawable/heart2"
             />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -32,7 +32,7 @@
             android:layout_height="@dimen/heart_size"
             android:layout_weight="1"
             android:layout_marginHorizontal="@dimen/heart_margin"
-            app:srcCompat="@drawable/heart1"
+            app:srcCompat="@drawable/heart2"
             />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -55,7 +55,7 @@
         android:layout_marginBottom="@dimen/margin_cockroach">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/main_IMG_cockroachLeft"
+            android:id="@+id/main_IMG_cockroach0"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -63,7 +63,15 @@
             app:srcCompat="@drawable/food"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/main_IMG_cockroachCenter"
+            android:id="@+id/main_IMG_cockroach1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/food"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_IMG_cockroach2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -71,7 +79,15 @@
             app:srcCompat="@drawable/food"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/main_IMG_cockroachRight"
+            android:id="@+id/main_IMG_cockroach3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/food"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_IMG_cockroach4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -122,6 +138,22 @@
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_0_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_0_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -153,6 +185,23 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_1_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_1_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -184,6 +233,23 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_2_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_2_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -215,6 +281,23 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_3_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_3_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -246,6 +329,23 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_4_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_4_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -277,6 +377,23 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_5_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_5_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -308,8 +425,24 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_6_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_6_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -340,8 +473,24 @@
                 android:layout_weight="1"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/flipflop"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_7_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/flipflop_7_4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/flipFlopHeight"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/flipflop"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -371,5 +520,17 @@
         app:srcCompat="@drawable/right"
         />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/main_LBL_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/coinsText"
+        android:textSize="@dimen/coinsTextSize"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/heart_margin"
+        android:layout_alignParentLeft="true"
+        android:layoutDirection="ltr"
+        android:textDirection="ltr"
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>
